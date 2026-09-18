@@ -38,7 +38,7 @@ Each `make` target calls the pnpm script of the same name, the same commands as 
 - **TypeScript**: `strict` plus `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noPropertyAccessFromIndexSignature` and friends. `erasableSyntaxOnly` keeps the code runnable by Node directly.
 - **ESLint** (`strictTypeChecked`): bans `any` and unsafe use of it, `as` casts (except `as const`), non-null `!`, `@ts-ignore`, floating promises, non-exhaustive `switch`es on unions, exported functions without declared types, `console`, `==`, and `eslint-disable` comments without a reason or that no longer suppress anything. In tests: no `.skip` / `.only`, and every test must assert something.
 - **Vitest**: 85% coverage on lines, branches, functions and statements; mocks are restored after each test; fast-check for property tests.
-- **knip**: unused files, exports and dependencies, and imports of packages missing from `package.json`.
+- **knip**: unused files, exports and dependencies, and imports of packages missing from `package.json`. A second, production-only pass catches app code importing a devDependency (it works locally but breaks in production installs) and packages under `dependencies` that only tests use.
 - **pnpm**: `minimumReleaseAge` refuses package versions published less than 7 days ago, which gives compromised releases time to be caught.
 - **Claude Code hooks** (`.claude/`): after each edit, ESLint and Prettier fix and report that file; when Claude tries to finish with uncommitted code changes, `make check` has to pass. Needs `jq`.
 - **CI** (`.github/workflows/ci.yml`): `make check` and `make audit` on every push to `main` and every PR.

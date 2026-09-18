@@ -16,7 +16,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint --max-warnings=0 .",
     "typecheck": "tsc",
-    "knip": "knip",
+    "knip": "knip && knip --production --strict --dependencies",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "deps:audit": "pnpm audit"
