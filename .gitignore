@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
