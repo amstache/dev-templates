@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.pnpm-store/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Claude Code personal settings
+.claude/settings.local.json
