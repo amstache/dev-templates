@@ -4,8 +4,8 @@ TypeScript on Node 24, managed with pnpm. Code and co-located tests (`*.test.ts`
 
 ## Commands
 
-- `pnpm check`: format check, ESLint, tsc, knip, Vitest + coverage. Must pass before you say you're done.
-- `pnpm fix`: auto-fix lint and formatting.
+- `make check`: format check, ESLint, tsc, knip, Vitest + coverage. Must pass before you say you're done.
+- `make fix`: auto-fix lint and formatting.
 - `pnpm add <pkg>` / `pnpm add -D <pkg>`. Ask before adding a dependency.
 
 ## Rules

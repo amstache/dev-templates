@@ -13,24 +13,25 @@ Rename `app` in `package.json`, then:
 
 ```bash
 git init
-pnpm install
-pnpm check
+make check
 ```
 
 Commit `pnpm-lock.yaml`, since CI installs with `--frozen-lockfile`. Delete `src/example.ts` and its test once you have real code.
 
 ## Commands
 
-| Command                     | What it does                                                       |
-| --------------------------- | ------------------------------------------------------------------ |
-| `pnpm dev`                  | Run `src/main.ts` with Node, restarting on changes                 |
-| `pnpm build` / `pnpm start` | Compile to `dist/` and run it                                      |
-| `pnpm check`                | Format check, lint, type check, knip, tests + coverage (85% floor) |
-| `pnpm fix`                  | Auto-fix lint and formatting                                       |
-| `pnpm test:watch`           | Vitest in watch mode                                               |
-| `pnpm audit`                | Known vulnerabilities in dependencies                              |
+| Command           | What it does                                                       |
+| ----------------- | ------------------------------------------------------------------ |
+| `make dev`        | Run `src/main.ts` with Node, restarting on changes                 |
+| `make build`      | Compile to `dist/`                                                 |
+| `make start`      | Build, then run `dist/main.js`                                     |
+| `make check`      | Format check, lint, type check, knip, tests + coverage (85% floor) |
+| `make fix`        | Auto-fix lint and formatting                                       |
+| `make test`       | Tests + coverage only                                              |
+| `make audit`      | Known vulnerabilities in dependencies                              |
+| `pnpm test:watch` | Vitest in watch mode                                               |
 
-The `Makefile` offers the same commands as the Python template (`make check`, `make fix`, `make audit`, plus `dev`, `build`, `start`, `test`). It runs `pnpm install` first whenever `package.json` or the lockfile changed, and `make start` builds first.
+Each `make` target calls the pnpm script of the same name, the same commands as the Python template. It runs `pnpm install` first whenever `package.json` or the lockfile changed.
 
 ## What's enforced
 
@@ -39,8 +40,8 @@ The `Makefile` offers the same commands as the Python template (`make check`, `m
 - **Vitest**: 85% coverage on lines, branches, functions and statements; mocks are restored after each test; fast-check for property tests.
 - **knip**: unused files, exports and dependencies, and imports of packages missing from `package.json`.
 - **pnpm**: `minimumReleaseAge` refuses package versions published less than 7 days ago, which gives compromised releases time to be caught.
-- **Claude Code hooks** (`.claude/`): after each edit, ESLint and Prettier fix and report that file; when Claude tries to finish with uncommitted code changes, `pnpm check` has to pass. Needs `jq`.
-- **CI** (`.github/workflows/ci.yml`): `pnpm check` and `pnpm audit` on every push to `main` and every PR.
+- **Claude Code hooks** (`.claude/`): after each edit, ESLint and Prettier fix and report that file; when Claude tries to finish with uncommitted code changes, `make check` has to pass. Needs `jq`.
+- **CI** (`.github/workflows/ci.yml`): `make check` and `make audit` on every push to `main` and every PR.
 - **CLAUDE.md**: the rules the tools can't enforce.
 
 ## Using it with a framework

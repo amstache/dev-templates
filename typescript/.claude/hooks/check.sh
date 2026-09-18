@@ -6,4 +6,4 @@ if git rev-parse --git-dir >/dev/null 2>&1 &&
   [[ -z $(git status --porcelain --untracked-files=all -- '*.ts' '*.js' '*.json' pnpm-lock.yaml pnpm-workspace.yaml) ]]; then
   exit 0
 fi
-out=$(pnpm check 2>&1) || { echo "$out" | tail -40 >&2; exit 2; }
+out=$(make check 2>&1) || { echo "$out" | tail -40 >&2; exit 2; }
