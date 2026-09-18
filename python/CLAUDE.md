@@ -10,7 +10,7 @@ Python project managed with uv. Code in `src/app/`, tests in `tests/` (pytest).
 
 ## Rules
 
-- Never loosen tooling to make errors go away: no new Ruff or deptry ignores, `# noqa`, `# pyright: ignore`, `# deptry: ignore`, `cast()`, `Any`, or lower coverage threshold. Fix the code. If a suppression is truly unavoidable, ask first.
+- Never loosen tooling to make errors go away; fix the code. Suppression comments won't help: `make check` ignores `# noqa` and rejects `# pyright:`, `# deptry:` and `# pragma: no cover` comments. Changing the files that define the checks (the `[tool.*]` settings in `pyproject.toml`, the `Makefile`, the root `conftest.py`, CI, `.claude/`) needs the user's approval, so ask first.
 - Validate external data (files, HTTP responses, env vars, JSON) with Pydantic models at the boundary; don't pass raw dicts around.
-- When implementing against existing tests, don't change the tests. Never add `skip`/`xfail` to get green.
+- When implementing against existing tests, don't change the tests.
 - Keep changes scoped to the task; no drive-by refactors.

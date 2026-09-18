@@ -1,5 +1,4 @@
 import js from "@eslint/js";
-import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import vitest from "@vitest/eslint-plugin";
 import { defineConfig, globalIgnores } from "eslint/config";
 import prettier from "eslint-config-prettier";
@@ -9,14 +8,27 @@ import tseslint from "typescript-eslint";
 export default defineConfig(
   globalIgnores(["dist/", "coverage/"]),
   js.configs.recommended,
-  comments.recommended,
   {
-    linterOptions: { reportUnusedDisableDirectives: "error" },
+    // `eslint-disable` comments do nothing: exceptions go in this file, where they're visible.
+    linterOptions: { noInlineConfig: true },
     plugins: { "simple-import-sort": simpleImportSort },
     rules: {
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
-      "@eslint-community/eslint-comments/require-description": "error",
+      // Coverage-ignore comments hide untested code, and knip skips exports tagged public or beta.
+      "no-warning-comments": [
+        "error",
+        {
+          terms: [
+            "v8 ignore",
+            "c8 ignore",
+            "istanbul ignore",
+            "@public",
+            "@beta",
+          ],
+          location: "anywhere",
+        },
+      ],
       "no-console": "error",
       eqeqeq: "error",
       complexity: ["error", 10],
@@ -39,6 +51,11 @@ export default defineConfig(
       "@typescript-eslint/consistent-type-assertions": [
         "error",
         { assertionStyle: "never" },
+      ],
+      // No @ts-ignore, @ts-expect-error or @ts-nocheck, even with a description.
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        { "ts-expect-error": true, "ts-ignore": true, "ts-nocheck": true },
       ],
       "@typescript-eslint/switch-exhaustiveness-check": "error",
       "@typescript-eslint/explicit-module-boundary-types": "error",

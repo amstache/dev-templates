@@ -18,15 +18,18 @@ start: build
 test:
 	uv run pytest
 
+# `--ignore-noqa` makes `# noqa` comments inert. pyright and deptry have no such switch,
+# so their suppression comments are rejected outright.
 check:
 	uv run ruff format --check .
-	uv run ruff check .
+	uv run ruff check --ignore-noqa .
+	@! grep -rnsE "#[[:space:]]*(pyright|deptry):|#[[:space:]]*pragma:[[:space:]]*no[[:space:]]*cover" src tests || { echo "Suppression comments aren't allowed: fix the code instead."; exit 1; }
 	uv run pyright
 	uv run deptry src
 	uv run pytest
 
 fix:
-	uv run ruff check --fix .
+	uv run ruff check --fix --ignore-noqa .
 	uv run ruff format .
 
 audit:

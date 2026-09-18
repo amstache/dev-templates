@@ -35,11 +35,11 @@ These are the same `make` commands as the TypeScript template. There's no instal
 
 ## What's enforced
 
-- **Ruff**: bans `typing.cast`, `Any` annotations, blind `except Exception`, bare `# type: ignore` / `# noqa`, `print()`, commented-out code, naive datetimes, shell-injection patterns, and missing annotations.
-- **pyright strict**: no unknown types, and `# type: ignore` comments are disabled.
-- **deptry**: every import in `src/` must come from a declared dependency of the right kind. It flags dev-only packages used by app code (they work locally but break in production installs), packages that are only installed because another dependency needs them, undeclared imports, and packages under `dependencies` that only tests use.
-- **pytest**: strict markers and config, an expected failure that passes counts as a failure, warnings are errors, 85% branch coverage, Hypothesis for property tests.
-- **Claude Code hooks** (`.claude/`): after each edit, Ruff fixes and reports that file; when Claude tries to finish with uncommitted Python changes, `make check` has to pass. Needs `jq`.
+- **Ruff**: bans `typing.cast` and `typing.Any` (also inside `dict[str, Any]`), blind `except Exception`, `print()`, commented-out code, naive datetimes, shell-injection patterns, and missing annotations. `make check` runs it with `--ignore-noqa`, so `# noqa` comments don't silence anything; a genuine exception goes in `per-file-ignores`, where it's visible.
+- **pyright strict**: no unknown types. `# type: ignore` comments are disabled, and `make check` rejects `# pyright:` comments, which could otherwise silence an error or take a whole file out of strict mode.
+- **deptry**: every import in `src/` must come from a declared dependency of the right kind. It flags dev-only packages used by app code (they work locally but break in production installs), packages that are only installed because another dependency needs them, undeclared imports, and packages under `dependencies` that only tests use. `# deptry:` comments are rejected too.
+- **pytest**: strict markers and config, an expected failure that passes counts as a failure, warnings are errors, 85% branch coverage, Hypothesis for property tests. `make check` rejects `# pragma: no cover`, which would hide untested code from the coverage floor. Ruff bans skipping tests or marking them as expected failures in any form: `pytest.mark.skip` / `skipif` / `xfail`, `pytest.skip()`, `pytest.xfail()`, `pytest.importorskip()`, and the `unittest` equivalents. Every test must assert something (checked by the root `conftest.py`): an `assert`, `pytest.raises` / `pytest.warns`, or an `assert*` call such as a mock's `assert_called_once()` or your own `assert_*` helper.
+- **Claude Code hooks** (`.claude/`): after each edit, Ruff fixes and reports that file; when Claude tries to finish with uncommitted Python changes, `make check` has to pass. If Claude changed the files that define the checks (the `[tool.*]` settings in `pyproject.toml`, the `Makefile`, the root `conftest.py`, CI, or `.claude/`), it's stopped once and told to revert the change or explain it to you; you approve by committing. Needs `jq`.
 - **CI** (`.github/workflows/ci.yml`): `make check` and `make audit` on every push to `main` and every PR.
 - **CLAUDE.md**: the rules the tools can't enforce.
 

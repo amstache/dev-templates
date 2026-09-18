@@ -50,6 +50,17 @@ select = [
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "typing.cast".msg = "Fix the types instead of casting."
+"typing.Any".msg = "Use a precise type, `object` plus narrowing, or a Pydantic model."
+"pytest.mark.skip".msg = "Don't skip tests: fix the test or the code."
+"pytest.mark.skipif".msg = "Don't skip tests: fix the test or the code."
+"pytest.mark.xfail".msg = "Don't mark tests as expected failures: fix the test or the code."
+"pytest.skip".msg = "Don't skip tests: fix the test or the code."
+"pytest.xfail".msg = "Don't mark tests as expected failures: fix the test or the code."
+"pytest.importorskip".msg = "Don't skip tests: declare the dependency instead."
+"unittest.skip".msg = "Don't skip tests: fix the test or the code."
+"unittest.skipIf".msg = "Don't skip tests: fix the test or the code."
+"unittest.skipUnless".msg = "Don't skip tests: fix the test or the code."
+"unittest.expectedFailure".msg = "Don't mark tests as expected failures: fix the test or the code."
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
